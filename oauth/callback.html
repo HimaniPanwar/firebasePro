@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>2</title>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+</head>
+<body>
+<script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBeiaYvXIykuN4cerxMHiq518xf7obo_lY",
+    authDomain: "project-7511273201481940737.firebaseapp.com",
+    databaseURL: "https://project-7511273201481940737.firebaseio.com",
+    projectId: "project-7511273201481940737",
+    storageBucket: "project-7511273201481940737.appspot.com",
+    messagingSenderId: "656817564651"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+   /* function $_GET(q,s){
+		s = (s) ? s: window.location.hash;
+		var re = new RegExp('&amp;'+q+'=([^&amp;]0*)','i');
+		return (s = s.replace(/^\?/,'&amp;').match(re))  ?s=s[1] : s=''
+	}
+	var value = $_GET('myvariable');
+	console.log(value);*/
+	console.log(window.location.href);
+	var type = window.location.hash.substr(1);
+	console.log(type);
+	var first = 'https://api.instagram.com/v1/users/self/?';
+	var second = type;
+	var url = first+second;
+	console.log(url);
+	$.ajax({
+        url: url,
+        dataType: 'jsonp',
+        type: 'GET',
+        success: 
+           function(wb){
+           	  console.log(wb);
+           	  writeUserData(wb.data.id,wb.data.username,wb.data.counts.followed_by,wb.data.counts.follows);
+           }
+	});
+   });
+</script>
+<script type="text/javascript">
+    var database = firebase.database();
+    function writeUserData(userId, name, followed_by,follows) {
+    firebase.database().ref('users/' + userId ).set({
+    username: name,
+    followed_by: followed_by,
+    follows: follows
+  });
+}
+</script>
+</body>
+</html>
